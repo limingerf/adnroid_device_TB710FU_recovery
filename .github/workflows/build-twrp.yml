@@ -31,7 +31,7 @@ jobs:
           cd "$GITHUB_WORKSPACE/twrp"
           source build/envsetup.sh
           lunch twrp_topaz
-          mka recoveryimage
+          mka -j2 recoveryimage
 
       - name: Build production DTB ramoops overlay
         run: dtc -@ -I dts -O dtb -o "$GITHUB_WORKSPACE/ramoops-overlay.dtbo" "$GITHUB_WORKSPACE/ramoops-overlay.dts"
