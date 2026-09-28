@@ -1,0 +1,19 @@
+#!/system/bin/sh
+# Print the ramoops configuration and preserve a copy for adb collection.
+out=/tmp/pstore_diag.txt
+{
+  echo "cmdline: $(cat /proc/cmdline 2>/dev/null)"
+  echo "ramoops parameters:"
+  for p in mem_address mem_size record_size console_size pmsg_size; do
+    printf '%s=' "$p"
+    cat "/sys/module/ramoops/parameters/$p" 2>/dev/null || echo unavailable
+  done
+  echo "pstore:"
+  ls -la /sys/fs/pstore 2>/dev/null
+  for f in /sys/fs/pstore/*; do
+    [ -f "$f" ] || continue
+    echo "===== $f ====="
+    cat "$f"
+  done
+} > "$out"
+cat "$out"

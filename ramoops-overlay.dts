@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/* Apply this overlay to the production boot/vendor_boot DTB.  A recovery
+ * ramdisk cannot change the DTB after the kernel has already probed ramoops. */
+/ {
+    fragment@0 {
+        target-path = "/reserved-memory/ramoops_region";
+        __overlay__ {
+            reg = <0x00000009 0xffdff000 0x00000000 0x00200000>;
+            record-size = <0x00040000>;
+            console-size = <0x00040000>;
+            pmsg-size = <0x00080000>;
+            status = "okay";
+        };
+    };
+};

@@ -17,7 +17,14 @@ lunch twrp_topaz
 make recoveryimage
 ```
 
-If there is no error, recovery.img will be found in `out/target/product/topaz/recovery.img ` 
+If there is no error, recovery.img will be found in `out/target/product/topaz/recovery.img `
+
+The tree includes a pstore diagnostic helper and the production ramoops
+settings observed on TB710FU (`0x9ffdff000`, 2 MiB).  `ramoops-overlay.dtbo`
+is also produced by CI.  Apply that overlay to the production boot/vendor_boot
+DTB before booting recovery; the recovery ramdisk is too late to change a
+ramoops region after the kernel has probed it.  `pstore_diag` prints the
+effective region and any files under `/sys/fs/pstore`.
 
 
 ## Features
