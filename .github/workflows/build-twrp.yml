@@ -24,7 +24,7 @@ jobs:
           repo init --depth=1 -u https://github.com/TWRP-Test/platform_manifest_twrp_aosp.git -b twrp-16.0
           repo sync -c -j"$(nproc)" --force-sync --no-clone-bundle --no-tags
           mkdir -p device/lenovo/topaz
-          rsync -a --delete --exclude .git "$GITHUB_WORKSPACE/" device/lenovo/topaz/
+          rsync -a --delete --exclude .git --exclude twrp/ "$GITHUB_WORKSPACE/" device/lenovo/topaz/
 
       - name: Build recovery image
         run: |
