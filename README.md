@@ -19,12 +19,14 @@ make recoveryimage
 
 If there is no error, recovery.img will be found in `out/target/product/topaz/recovery.img `
 
-The tree includes a pstore diagnostic helper and the production ramoops
-settings observed on TB710FU (`0x9ffdff000`, 2 MiB).  `ramoops-overlay.dtbo`
-is also produced by CI.  Apply that overlay to the production boot/vendor_boot
-DTB before booting recovery; the recovery ramdisk is too late to change a
-ramoops region after the kernel has probed it.  `pstore_diag` prints the
-effective region and any files under `/sys/fs/pstore`.
+The tree includes a pstore diagnostic helper and a DTBO overlay for the
+production ramoops region observed on TB710FU (`0x9ffdff000`, 2 MiB). CI
+produces the overlay as a separate artifact even if the full Android build is
+cancelled. This device tree excludes the recovery kernel, so changing the
+recovery kernel command line cannot correct ramoops. Apply the overlay to the
+DTB used by the recovery boot before the kernel probes ramoops, then run
+`pstore_diag` in TWRP to print the effective region and files under
+`/sys/fs/pstore`.
 
 
 ## Features

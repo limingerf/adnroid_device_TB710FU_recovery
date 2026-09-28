@@ -4,6 +4,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-ramoops-overlay:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout device tree
+        uses: actions/checkout@v4
+
+      - name: Install device tree compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y device-tree-compiler
+
+      - name: Build ramoops overlay
+        run: dtc -@ -I dts -O dtb -o ramoops-overlay.dtbo ramoops-overlay.dts
+
+      - name: Upload ramoops overlay
+        uses: actions/upload-artifact@v4
+        with:
+          name: tb710fu-ramoops-overlay
+          path: |
+            ramoops-overlay.dts
+            ramoops-overlay.dtbo
+
   build:
     runs-on: ubuntu-24.04
     steps:
@@ -33,9 +55,6 @@ jobs:
           lunch twrp_topaz
           mka -j2 recoveryimage
 
-      - name: Build production DTB ramoops overlay
-        run: dtc -@ -I dts -O dtb -o "$GITHUB_WORKSPACE/ramoops-overlay.dtbo" "$GITHUB_WORKSPACE/ramoops-overlay.dts"
-
       - name: Collect recovery and pstore overlay sources
         uses: actions/upload-artifact@v4
         with:
@@ -44,5 +63,3 @@ jobs:
             twrp/out/target/product/topaz/recovery.img
             twrp/device/lenovo/topaz/BoardConfig.mk
             twrp/device/lenovo/topaz/recovery/root/system/bin/pstore_diag
-            ramoops-overlay.dts
-            ramoops-overlay.dtbo

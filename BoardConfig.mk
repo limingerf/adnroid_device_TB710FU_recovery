@@ -64,15 +64,6 @@ BOARD_MKBOOTIMG_ARGS        += --pagesize $(BOARD_KERNEL_PAGESIZE)
 
 BOARD_RAMDISK_USE_LZ4       := true
 
-# Android's production DTB reserves this ramoops region.  Keep the same
-# values in recovery builds so a recovery boot that supplies a kernel can
-# expose the Android pstore records instead of TWRP's 1 MiB test region.
-BOARD_KERNEL_CMDLINE += ramoops.mem_address=0x9ffdff000
-BOARD_KERNEL_CMDLINE += ramoops.mem_size=0x200000
-BOARD_KERNEL_CMDLINE += ramoops.record_size=0x40000
-BOARD_KERNEL_CMDLINE += ramoops.console_size=0x40000
-BOARD_KERNEL_CMDLINE += ramoops.pmsg_size=0x80000
-
 # Partitions
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED  := true
 BOARD_RECOVERYIMAGE_PARTITION_SIZE      := 104857600
